@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ChromiumBasedAppLauncherConfigurer": {
+      "commandName": "Project",
+      "commandLineArgs": "delete\r\n17"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ChromiumBasedAppLauncher (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ChromiumBasedAppLauncher (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ChromiumBasedAppLauncherCore": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\ProgramFiles\\SuGar\\ChromiumBasedAppLauncher\"\r\n4\r\n\"C:\\Program Files\\Google\\Chrome\\Application\\chrome_proxy.exe\"\r\n--profile-directory=Default\r\n--app-id=khdlbafljbppighdndhfcmelffgolacf"
+    }
+  }
+}

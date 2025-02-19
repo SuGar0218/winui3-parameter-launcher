@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ChromiumBasedAppLauncherGUI.Views.ParameterConfigPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helper="using:ChromiumBasedAppLauncherGUI.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:ChromiumBasedAppLauncherGUI.ViewModels"
+    Unloaded="Page_Unloaded"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="ParameterListItemDataTemplate" x:DataType="vm:ParameterListItem">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <CheckBox
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    Checked="CheckBox_Parameter_CheckedChanged"
+                    IsChecked="{x:Bind Enabled, Mode=TwoWay}"
+                    Unchecked="CheckBox_Parameter_CheckedChanged">
+                    <TextBox
+                        HorizontalAlignment="Stretch"
+                        DataContext="{x:Bind}"
+                        Text="{x:Bind Parameter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextChanged="ParameterListItemChanged" />
+                </CheckBox>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <HyperlinkButton
+                        Click="HyperlinkButton_Copy_Click"
+                        Content="复制"
+                        DataContext="{x:Bind}" />
+
+                    <HyperlinkButton
+                        Click="HyperlinkButton_RemoveConfig_Click"
+                        Content="移除"
+                        DataContext="{x:Bind}"
+                        Foreground="Red" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <StackPanel
+                Margin="16,0"
+                Loaded="{x:Bind helper:LayoutHelper.StackPanelCenterVerticalAlignContentOnLoaded}"
+                Orientation="Horizontal"
+                Spacing="16">
+                <Image Source="{x:Bind viewModel.AppListItem.Icon}" />
+                <StackPanel>
+                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind viewModel.AppListItem.Name}" />
+                    <TextBlock Text="{x:Bind viewModel.AppListItem.Path}" />
+                </StackPanel>
+            </StackPanel>
+
+            <CommandBar Grid.Row="0">
+                <AppBarButton
+                    Click="AppBarButton_Add_Click"
+                    Icon="Add"
+                    Label="添加启动参数" />
+                <AppBarButton
+                    Click="AppBarButton_Save_Click"
+                    Icon="Accept"
+                    Label="保存" />
+            </CommandBar>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <ScrollView Padding="16,0">
+                <StackPanel Spacing="4">
+                    <ItemsRepeater ItemTemplate="{StaticResource ParameterListItemDataTemplate}" ItemsSource="{x:Bind viewModel.ParameterConfigs}" />
+                </StackPanel>
+            </ScrollView>
+        </StackPanel>
+    </Grid>
+</Page>
