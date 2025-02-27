@@ -2,7 +2,8 @@
   "profiles": {
     "ChromiumBasedAppLauncherCore": {
       "commandName": "Project",
-      "commandLineArgs": "\"D:\\ProgramFiles\\SuGar\\ChromiumBasedAppLauncher\"\r\n4\r\n\"C:\\Program Files\\Google\\Chrome\\Application\\chrome_proxy.exe\"\r\n--profile-directory=Default\r\n--app-id=khdlbafljbppighdndhfcmelffgolacf"
+      "commandLineArgs": "\"D:\\ProgramFiles\\SuGar\\ChromiumBasedAppLauncher\"\r\n14\r\n\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\"",
+      "workingDirectory": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application"
     }
   }
 }

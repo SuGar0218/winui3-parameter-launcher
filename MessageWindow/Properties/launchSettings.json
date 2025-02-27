@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "MessageWindow (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MessageWindow (Unpackaged)": {
+      "commandName": "Project",
+      "commandLineArgs": "a\r\nb"
+    }
+  }
+}

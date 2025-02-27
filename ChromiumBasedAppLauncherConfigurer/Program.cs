@@ -15,9 +15,9 @@ internal class Program
     /// 由于需要操作注册表和在程序安装位置复制文件，需要以管理员身份运行，启动时会显示用户账户控制（UAC），详见 app.manifest
     /// 参数：启用(enable)或禁用(disable)、已配置的程序数据库ID
     /// <br/>
-    /// 例如：enable chrome.exe
+    /// 例如：enable 1
     /// <br/>
-    /// 例如：disable Code.exe
+    /// 例如：disable 1
     /// </summary>
     /// <param name="args">args不含有此程序所在路径</param>
     static void Main(string[] args)
@@ -40,6 +40,9 @@ internal class Program
             default:
                 return;
         }
+
+        //StringBuilder logStringBuilder = new();
+
     }
 
     /// <summary>
@@ -54,11 +57,12 @@ internal class Program
             return;
 
         string originPath = app.Path;
-        string copiedPath = Path.GetDirectoryName(app.Path) + Path.DirectorySeparatorChar + GlobalProperties.CopiedFileName(Path.GetFileName(app.Path));
-        List<string> parameters = parameterDao.ListEnabledParameters(appId);
-
+        string copiedPath = Path.Combine(
+            Path.GetDirectoryName(app.Path)!,
+            Path.GetFileName(GlobalProperties.CopiedFileName(Path.GetFileName(app.Path))));
         File.Copy(originPath, copiedPath, overwrite: true);
 
+        List<string> parameters = parameterDao.ListEnabledParameters(appId);
         StringBuilder argsStringBuilder = new();
         foreach (string parameter in parameters)
         {
@@ -66,8 +70,7 @@ internal class Program
         }
 
         using RegistryKey registryKey = ImageFileExecutionOptions.OpenSubKey(app.Name, writable: true) ?? ImageFileExecutionOptions.CreateSubKey(app.Name, writable: true);
-        string debugger = //$"\"{Path.GetFullPath(GlobalProperties.CoreLauncherPath)}\" \"{Path.GetDirectoryName(GlobalProperties.CoreLauncherPath)}\" {appId}";
-        new StringBuilder()
+        string debugger = new StringBuilder()
             .Append('\"')
             .Append(Path.GetFullPath(GlobalProperties.CoreLauncherPath))
             .Append('\"')
@@ -90,7 +93,6 @@ internal class Program
         using RegistryKey registryKey = ImageFileExecutionOptions.OpenSubKey(app.Name, writable: true) ?? ImageFileExecutionOptions.CreateSubKey(app.Name, writable: true);
         registryKey.SetValue("Debugger", "");
     }
-
 
     /// <summary>
     /// 1. 删除复制的exe文件

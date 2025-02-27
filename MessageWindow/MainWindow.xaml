@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window
+    x:Class="MessageWindow.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:MessageWindow"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock MinWidth="200" Style="{ThemeResource TitleTextBlockStyle}" Text="{x:Bind title}" />
+            <TextBlock MinWidth="200" Text="{x:Bind message}" />
+            <Button HorizontalAlignment="Right" Content="好" Style="{ThemeResource AccentButtonStyle}" />
+        </StackPanel>
+    </Grid>
+</Window>

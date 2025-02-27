@@ -25,9 +25,9 @@
                 Header="{x:Bind Name}"
                 ToolTipService.Placement="Bottom"
                 ToolTipService.ToolTip="{x:Bind Path}">
-                <TabViewItem.IconSource>
+                <!--<TabViewItem.IconSource>
                     <ImageIconSource ImageSource="{x:Bind Icon}" />
-                </TabViewItem.IconSource>
+                </TabViewItem.IconSource>-->
             </TabViewItem>
         </DataTemplate>
 

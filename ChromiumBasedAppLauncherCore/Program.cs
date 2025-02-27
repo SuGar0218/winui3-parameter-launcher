@@ -4,8 +4,11 @@ using ChromiumBasedAppLauncherCommon.Entities;
 using ChromiumBasedAppLauncherCommon.Helpers;
 
 using Microsoft.Data.Sqlite;
+using Microsoft.Win32;
 
 using System.Diagnostics;
+using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ChromiumBasedAppLauncherCore;
@@ -16,29 +19,20 @@ namespace ChromiumBasedAppLauncherCore;
 internal class Program
 {
     /// <summary>
-    /// 传入参数：[0]此程序本体所在路径、[1]程序ID
+    /// 传入参数：[0]此程序本体所在文件夹、[1]程序ID
     /// <br/>
-    /// 后面如果有，就是映像 Debugger 劫持传过来的参数（[3]原程序路径、[4+]参数）。
+    /// 后面如果有，就是映像 Debugger 劫持传过来的参数（[2]原程序路径、[3+]参数）。
     /// <br/>
     /// 映像劫持执行时，会把原本调用的命令接在最后。
     /// </summary>
     /// <param name="args">不包含程序所在位置</param>
     static void Main(string[] args)
     {
-        //Console.WriteLine(args.ToString('\n'));
-        //Console.ReadLine();
-
-        //Task.Run(() =>
-        //{
-        //    StringBuilder logStringBuilder = new StringBuilder().AppendLine(DateTime.Now.ToString());
-        //    for (int i = 0; i < args.Length; i++)
-        //    {
-        //        logStringBuilder.AppendLine(args[i]);
-        //    }
-        //    File.AppendAllText(Path.Combine(args[0], "log.txt"), logStringBuilder.AppendLine().ToString());
-        //});
-
-        SqliteConnection connection = new(new SqliteConnectionStringBuilder { DataSource = Path.GetFullPath(Path.Combine(args[0], GlobalProperties.SqliteDataSource)) }.ToString());
+        SqliteConnection connection = new(new SqliteConnectionStringBuilder
+        {
+            DataSource = Path.GetFullPath(Path.Combine(args[0], GlobalProperties.SqliteDataSource))
+        }
+        .ToString());
         AppDao appDao = new(connection);
         ParameterDao parameterDao = new(connection);
 
@@ -55,14 +49,64 @@ internal class Program
 
         foreach (string parameter in parameters)
         {
-            argsStringBuilder.Append(' ').Append(parameter);
+            argsStringBuilder.Append(' ');
+            if (parameter.Contains(' '))
+            {
+                argsStringBuilder.Append('\"').Append(parameter).Append('\"');
+            }
+            else
+            {
+                argsStringBuilder.Append(parameter);
+            }
         }
 
         for (int i = 3; i < args.Length; i++)
         {
-            argsStringBuilder.Append(' ').Append(args[i]);
+            argsStringBuilder.Append(' ');
+            if (args[i].Contains(' '))
+            {
+                argsStringBuilder.Append('\"').Append(args[i]).Append('\"');
+            }
+            else
+            {
+                argsStringBuilder.Append(args[i]);
+            }
         }
-        
-        _ = ProcessHelper.StartSilent(copyPath, argsStringBuilder.ToString()) ?? ProcessHelper.StartSilentAsAdmin(copyPath, argsStringBuilder.ToString());
+
+        // 尝试启动
+        // 如果启动失败，先尝试重新复制文件，再尝试以管理员身份启动。
+        string launchArgs = argsStringBuilder.ToString();
+        bool launchFailed = ProcessHelper.StartSilent(copyPath, launchArgs) is null;
+        if (launchFailed)
+        {
+            MessageBox(
+                0,
+                "此程序似乎已更新，这需要重新复制一次程序可执行文件。如果稍后询问你授权，请允许。如果稍后仍无法启动，请联系开发者。",
+                "尝试修复此程序的启动",
+                0);
+            string copyExePath = Path.Combine(args[0], "Copy.exe");
+            _ = ProcessHelper.StartSilentAsAdminAndWait(copyExePath, $"\"{appPath}\" \"{copyPath}\"");
+            _ = ProcessHelper.StartSilent(copyPath, launchArgs) ??
+                ProcessHelper.StartSilentAsAdmin(copyPath, launchArgs); 
+        }
+
+        // 记录运行日志，以备不时之需。
+        StringBuilder logStringBuilder = new StringBuilder().AppendLine(DateTime.Now.ToString());
+        if (launchFailed)
+        {
+            logStringBuilder.AppendLine($"重新复制文件").AppendLine(copyPath);
+        }
+        logStringBuilder.AppendLine("启动器接收的参数");
+        for (int i = 0; i < args.Length; i++)
+        {
+            logStringBuilder.AppendLine(args[i]);
+        }
+        logStringBuilder.AppendLine("启动应用的参数");
+        logStringBuilder.AppendLine(argsStringBuilder.ToString());
+        string logPath = Path.Combine(args[0], "log.txt");
+        File.AppendAllText(logPath, logStringBuilder.AppendLine().ToString());
     }
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    public static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
 }

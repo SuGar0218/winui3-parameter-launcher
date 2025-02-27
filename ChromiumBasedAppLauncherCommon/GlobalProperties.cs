@@ -46,6 +46,6 @@ public class GlobalProperties
     /// </summary>
     public static string CopiedFileName(string fileName)
     {
-        return new StringBuilder().Append("_copy_of_").Append(fileName).ToString();
+        return new StringBuilder().Append('_').Append(fileName).ToString();
     }
 }
