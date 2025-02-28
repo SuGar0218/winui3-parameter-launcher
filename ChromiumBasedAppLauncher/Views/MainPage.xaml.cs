@@ -61,7 +61,10 @@ public sealed partial class MainPage : Page
             .AddFileTypeFilter("exe")
             .PickSingleAsync();
 
-        viewModel.AddAppListItem(file.Name, file.Path);
+        if (file is not null)
+        {
+            viewModel.AddAppListItem(file.Name, file.Path);
+        }
     }
 
     private void Navigation_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -110,13 +113,13 @@ public sealed partial class MainPage : Page
         if (await this.MessageBox(page, "程序所在位置", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
             return;
 
-        string path = Path.GetFullPath(page.Input);
+        string path = Path.GetFullPath(page.Input.Replace("\"", ""));
         if (!File.Exists(path))
         {
             await this.MessageBox(path, "文件不存在");
             return;
         }
-        if (!page.Input.EndsWith(".exe"))
+        if (!path.EndsWith(".exe"))
         {
             await this.MessageBox(path, "这不是可执行文件（exe）");
             return;
