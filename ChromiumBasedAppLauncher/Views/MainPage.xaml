@@ -109,6 +109,26 @@
                 </StackPanel>
             </ListViewItem>
         </DataTemplate>
+
+        <TeachingTip
+            x:Name="RemoveButtonTip"
+            Title="移除已配置的程序"
+            Subtitle="在列表项上右键，可以移除对指定程序的配置。"
+            Target="{x:Bind RemoveAppBarButton}">
+            <TeachingTip.HeroContent>
+                <Image Source="/Assets/RemoveConfigTip.png" />
+            </TeachingTip.HeroContent>
+        </TeachingTip>
+
+        <TeachingTip
+            x:Name="HowWorksTip"
+            Title="映像劫持"
+            Subtitle="当从任何地方启动程序时，会被重定向到此启动器，并由启动器添加您配置的启动参数。由于会在程序安装位置复制一个副本，以便启动器绕开映像劫持，所以不适用于会检测安装目录、对文件名敏感的程序。如果配置之后发生错误，请取消配置那个程序。"
+            Target="{x:Bind RemoveAppBarButton}">
+            <TeachingTip.HeroContent>
+                <Image Source="/Assets/IFEOTip.png" />
+            </TeachingTip.HeroContent>
+        </TeachingTip>
     </Page.Resources>
 
     <Grid>
@@ -182,9 +202,15 @@
                     </AppBarButton>
 
                     <AppBarButton
+                        x:Name="RemoveAppBarButton"
+                        Click="RemoveAppBarButton_Click"
+                        Icon="Remove"
+                        Label="移除程序" />
+
+                    <AppBarButton
                         Click="AppBarButton_Help_Click"
                         Icon="Help"
-                        Label="帮助" />
+                        Label="程序是如何工作的" />
                 </CommandBar>
             </NavigationView.PaneCustomContent>
 

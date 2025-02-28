@@ -165,8 +165,13 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private async void AppBarButton_Help_Click(object sender, RoutedEventArgs e)
+    private void AppBarButton_Help_Click(object sender, RoutedEventArgs e)
     {
-        await this.MessageBox(new HelpPage(), "°ïÖú");
+        HowWorksTip.IsOpen = true;
+    }
+
+    private void RemoveAppBarButton_Click(object sender, RoutedEventArgs e)
+    {
+        RemoveButtonTip.IsOpen = true;
     }
 }

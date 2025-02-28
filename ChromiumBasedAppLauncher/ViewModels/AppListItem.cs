@@ -6,6 +6,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using Microsoft.UI.Xaml.Media.Imaging;
 
+using System;
+
 namespace ChromiumBasedAppLauncherGUI.ViewModels;
 
 public class AppListItem

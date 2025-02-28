@@ -15,6 +15,9 @@
 	  <WindowsPackageType>None</WindowsPackageType>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Assets\IFEOTip.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Views\HelpPage.xaml" />
   </ItemGroup>
   <!--<ItemGroup>
