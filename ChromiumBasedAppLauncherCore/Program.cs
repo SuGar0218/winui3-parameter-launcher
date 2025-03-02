@@ -16,7 +16,7 @@ namespace ChromiumBasedAppLauncherCore;
 /// <summary>
 /// 生成的 exe 与 GUI 的 exe 放在同一文件夹
 /// </summary>
-internal class Program
+internal partial class Program
 {
     /// <summary>
     /// 传入参数：[0]此程序本体所在文件夹、[1]程序ID
@@ -76,10 +76,20 @@ internal class Program
         // 尝试启动
         // 如果启动失败，先尝试重新复制文件，再尝试以管理员身份启动。
         string launchArgs = argsStringBuilder.ToString();
-        bool launchFailed = ProcessHelper.StartSilent(copyPath, launchArgs) is null;
-        if (launchFailed)
+        Process? process = ProcessHelper.StartSilent(copyPath, launchArgs);
+        bool failed = false;
+        if (process is null)
         {
-            MessageBox(
+            failed = true;
+        }
+        else
+        {
+            process.WaitForExit();
+            failed = (process.ExitCode != 0);
+        }
+        if (failed)
+        {
+            _ = MessageBox(
                 0,
                 "此程序似乎已更新，这需要重新复制一次程序可执行文件。如果稍后询问你授权，请允许。如果稍后仍无法启动，请联系开发者。",
                 "尝试修复此程序的启动",
@@ -87,26 +97,26 @@ internal class Program
             string copyExePath = Path.Combine(args[0], "Copy.exe");
             _ = ProcessHelper.StartSilentAsAdminAndWait(copyExePath, $"\"{appPath}\" \"{copyPath}\"");
             _ = ProcessHelper.StartSilent(copyPath, launchArgs) ??
-                ProcessHelper.StartSilentAsAdmin(copyPath, launchArgs); 
+                ProcessHelper.StartSilentAsAdmin(copyPath, launchArgs);
         }
 
         // 记录运行日志，以备不时之需。
-        StringBuilder logStringBuilder = new StringBuilder().AppendLine(DateTime.Now.ToString());
-        if (launchFailed)
-        {
-            logStringBuilder.AppendLine($"重新复制文件").AppendLine(copyPath);
-        }
-        logStringBuilder.AppendLine("启动器接收的参数");
-        for (int i = 0; i < args.Length; i++)
-        {
-            logStringBuilder.AppendLine(args[i]);
-        }
-        logStringBuilder.AppendLine("启动应用的参数");
-        logStringBuilder.AppendLine(argsStringBuilder.ToString());
-        string logPath = Path.Combine(args[0], "log.txt");
-        File.AppendAllText(logPath, logStringBuilder.AppendLine().ToString());
+        //StringBuilder logStringBuilder = new StringBuilder().AppendLine(DateTime.Now.ToString());
+        //if (failed)
+        //{
+        //    logStringBuilder.AppendLine($"重新复制文件").AppendLine(copyPath);
+        //}
+        //logStringBuilder.AppendLine("启动器接收的参数");
+        //for (int i = 0; i < args.Length; i++)
+        //{
+        //    logStringBuilder.AppendLine(args[i]);
+        //}
+        //logStringBuilder.AppendLine("启动应用的参数");
+        //logStringBuilder.AppendLine(argsStringBuilder.ToString());
+        //string logPath = Path.Combine(args[0], "log.txt");
+        //File.AppendAllText(logPath, logStringBuilder.AppendLine().ToString());
     }
 
-    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-    public static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
+    [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16)]
+    public static partial int MessageBox(IntPtr hWnd, string text, string caption, uint type);
 }

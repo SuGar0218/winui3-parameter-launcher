@@ -20,7 +20,7 @@ public class ProcessHelper
             if (!process.Start())
                 return null;
         }
-        catch (Win32Exception) // 找不到文件、UAC被取消
+        catch // 找不到文件、UAC被取消
         {
             return null;
         }
@@ -40,7 +40,7 @@ public class ProcessHelper
             if (!process.Start())
                 return null;
         }
-        catch (Win32Exception)
+        catch
         {
             return null;
         }
@@ -60,7 +60,7 @@ public class ProcessHelper
             if (!process.Start())
                 return null;
         }
-        catch (Win32Exception) // 找不到文件、UAC被取消
+        catch // 找不到文件、UAC被取消
         {
             return null;
         }

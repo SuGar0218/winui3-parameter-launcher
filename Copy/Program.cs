@@ -11,15 +11,6 @@ internal class Program
         }
         string src = args[0];
         string dst = args[1];
-        Process process = new();
-        process.StartInfo.FileName = "cmd.exe";
-        process.StartInfo.RedirectStandardInput = true;
-        process.StartInfo.RedirectStandardOutput = true;
-        process.StartInfo.RedirectStandardError = true;
-        process.StartInfo.UseShellExecute = false;
-        process.StartInfo.CreateNoWindow = true;
-        process.Start();
-        process.StandardInput.WriteLine($"copy \"{src}\" \"{dst}\" &exit");
-        process.WaitForExit();
+        File.Copy(src, dst, overwrite: true);
     }
 }

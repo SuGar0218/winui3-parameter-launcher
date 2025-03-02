@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Copy": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\"\r\n\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\_msedge.exe\""
+    }
+  }
+}
