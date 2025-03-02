@@ -1,3 +1,4 @@
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -15,25 +16,37 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using WinUIEx;
 
-namespace MessageWindow
+namespace MessageWindow;
+
+public sealed partial class MainWindow : WindowEx
 {
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class MainWindow : Window
+    public MainWindow(string title, string message)
     {
-        public MainWindow(string title, string message)
-        {
-            this.title = title;
-            this.message = message;
-            InitializeComponent();
-            ExtendsContentIntoTitleBar = true;
-        }
+        this.title = title;
+        this.message = message;
+        InitializeComponent();
+        ExtendsContentIntoTitleBar = true;
+        AppWindow.SetPresenter(Microsoft.UI.Windowing.AppWindowPresenterKind.CompactOverlay);
+    }
 
-        private readonly string title;
-        private readonly string message;
+    private readonly string title;
+    private readonly string message;
+
+    private void Root_Loaded(object sender, RoutedEventArgs e)
+    {
+        StackPanel rootGrid = (StackPanel) sender;
+        double scale = rootGrid.XamlRoot.RasterizationScale;
+        double width = rootGrid.ActualWidth;
+        double height = rootGrid.ActualHeight;
+        AppWindow.Resize(new Windows.Graphics.SizeInt32((int) (width * scale), (int) (height * scale)));
+        this.CenterOnScreen();
+        Activate();
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }

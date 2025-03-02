@@ -77,7 +77,7 @@ internal partial class Program
         // 如果启动失败，先尝试重新复制文件，再尝试以管理员身份启动。
         string launchArgs = argsStringBuilder.ToString();
         Process? process = ProcessHelper.StartSilent(copyPath, launchArgs);
-        bool failed = false;
+        bool failed;
         if (process is null)
         {
             failed = true;
@@ -89,11 +89,15 @@ internal partial class Program
         }
         if (failed)
         {
-            _ = MessageBox(
-                0,
-                "此程序似乎已更新，这需要重新复制一次程序可执行文件。如果稍后询问你授权，请允许。如果稍后仍无法启动，请联系开发者。",
-                "尝试修复此程序的启动",
-                0);
+            //_ = MessageBox(
+            //    0,
+            //    "此程序似乎已更新，这需要重新复制一次程序可执行文件。如果稍后询问你授权，请允许。如果稍后仍无法启动，请联系开发者。",
+            //    "尝试修复此程序的启动",
+            //    0);
+            ProcessHelper.StartSilentAndWait(
+                Path.Combine(args[0], @"MessageWindow\MessageWindow.exe"),
+                " 此程序似乎已更新，这需要重新复制一次程序可执行文件。如果稍后询问你授权，请允许。如果稍后仍无法启动，请联系开发者。" +
+                " 尝试修复此程序的启动");
             string copyExePath = Path.Combine(args[0], "Copy.exe");
             _ = ProcessHelper.StartSilentAsAdminAndWait(copyExePath, $"\"{appPath}\" \"{copyPath}\"");
             _ = ProcessHelper.StartSilent(copyPath, launchArgs) ??
@@ -117,6 +121,6 @@ internal partial class Program
         //File.AppendAllText(logPath, logStringBuilder.AppendLine().ToString());
     }
 
-    [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16)]
-    public static partial int MessageBox(IntPtr hWnd, string text, string caption, uint type);
+    //[LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16)]
+    //public static partial int MessageBox(IntPtr hWnd, string text, string caption, uint type);
 }

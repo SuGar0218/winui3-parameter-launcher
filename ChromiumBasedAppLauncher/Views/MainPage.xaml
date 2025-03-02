@@ -152,7 +152,7 @@
                 Click="TitleBarPaneToggleButton_Click"
                 Style="{ThemeResource TitleBarPaneToggleButtonStyle}" />
 
-            <Border Margin="4,0" />
+            <Border Width="8" />
 
             <Image Source="/Assets/exe-arg.ico" Height="20" />
 

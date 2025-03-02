@@ -5,7 +5,7 @@
     },
     "MessageWindow (Unpackaged)": {
       "commandName": "Project",
-      "commandLineArgs": "a\r\nb"
+      "commandLineArgs": "此程序似乎已更新，这需要重新复制一次程序可执行文件。如果稍后询问你授权，请允许。如果稍后仍无法启动，请联系开发者。\r\n启动失败"
     }
   }
 }

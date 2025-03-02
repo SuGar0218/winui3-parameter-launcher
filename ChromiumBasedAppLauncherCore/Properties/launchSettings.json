@@ -2,7 +2,7 @@
   "profiles": {
     "ChromiumBasedAppLauncherCore": {
       "commandName": "Project",
-      "commandLineArgs": "\"D:\\ProgramFiles\\SuGar\\ChromiumBasedAppLauncher\"\r\n14\r\n\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\"",
+      "commandLineArgs": "\"D:\\ProgramFiles\\SuGar\\ChromiumBasedAppLauncher\"\r\n4",
       "workingDirectory": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application"
     }
   }

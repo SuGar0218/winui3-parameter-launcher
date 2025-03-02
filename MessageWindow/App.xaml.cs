@@ -39,12 +39,14 @@ namespace MessageWindow
 
         /// <summary>
         /// Invoked when the application is launched.
+        /// <br/>
+        /// 启动参数：消息、标题（类似 MessageBox）
         /// </summary>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             string[] launchArgs = Environment.GetCommandLineArgs();
             m_window = new MainWindow(launchArgs[2], launchArgs[1]);
-            m_window.Activate();
+            //m_window.Activate();
         }
 
         private Window? m_window;
