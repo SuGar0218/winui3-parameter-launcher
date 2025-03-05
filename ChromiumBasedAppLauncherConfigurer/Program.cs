@@ -60,14 +60,19 @@ internal class Program
         string copiedPath = Path.Combine(
             Path.GetDirectoryName(app.Path)!,
             Path.GetFileName(GlobalProperties.CopiedFileName(Path.GetFileName(app.Path))));
-        File.Copy(originPath, copiedPath, overwrite: true);
-
-        List<string> parameters = parameterDao.ListEnabledParameters(appId);
-        StringBuilder argsStringBuilder = new();
-        foreach (string parameter in parameters)
+        //File.Copy(originPath, copiedPath, overwrite: true);
+        if (File.Exists(copiedPath))
         {
-            argsStringBuilder.Append(' ').Append(parameter);
+            File.Delete(copiedPath);
         }
+        File.CreateSymbolicLink(copiedPath, originPath);
+
+        //List<string> parameters = parameterDao.ListEnabledParameters(appId);
+        //StringBuilder argsStringBuilder = new();
+        //foreach (string parameter in parameters)
+        //{
+        //    argsStringBuilder.Append(' ').Append(parameter);
+        //}
 
         using RegistryKey registryKey = ImageFileExecutionOptions.OpenSubKey(app.Name, writable: true) ?? ImageFileExecutionOptions.CreateSubKey(app.Name, writable: true);
         string debugger = new StringBuilder()
