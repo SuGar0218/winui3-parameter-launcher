@@ -14,7 +14,7 @@ public class TitleBarPassthroughHelper
     public TitleBarPassthroughHelper(Window window)
     {
         this.window = window;
-        //this.scale = window.Content.XamlRoot.RasterizationScale;
+        this.scale = window.Content.XamlRoot.RasterizationScale;
     }
 
     private readonly Window window;

@@ -72,7 +72,10 @@ public partial class ParameterConfigViewModel : ObservableObject
         parameterDao.RemoveAll(AppListItem.Id);
         foreach (ParameterListItem item in ParameterConfigs)
         {
-            parameterDao.Add(item.Config);
+            if (!string.IsNullOrWhiteSpace(item.Parameter))
+            {
+                parameterDao.Add(item.Config);
+            }
         }
     }
 }

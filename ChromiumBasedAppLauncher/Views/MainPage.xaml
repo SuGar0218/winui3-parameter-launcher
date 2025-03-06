@@ -15,9 +15,11 @@
     <Page.Resources>
         <StaticResource x:Key="TabViewItemHeaderBackgroundSelected" ResourceKey="LayerOnMicaBaseAltFillColorDefaultBrush" />
         <StaticResource x:Key="NavigationViewContentBackground" ResourceKey="NavigationViewExpandedPaneBackground" />
-        <x:Double x:Key="NavigationViewItemOnLeftIconBoxWidth">80</x:Double>
+        <x:Double x:Key="NavigationViewItemOnLeftIconBoxWidth">96</x:Double>
         <x:Double x:Key="NavigationViewItemOnLeftIconBoxHeight">48</x:Double>
         <Thickness x:Key="NavigationViewItemOnLeftIconBoxMargin">8,0</Thickness>
+        <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
+        <SolidColorBrush x:Key="TabViewBorderBrush" Color="Transparent" />
 
         <!--  已打开的标签页模板  -->
         <DataTemplate x:Key="AppListTabItemDataTemplate" x:DataType="vm:AppListItem">
@@ -45,8 +47,15 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" ToolTipService.ToolTip="{x:Bind Path}">
-                        <TextBlock Text="{x:Bind Name}" />
-                        <TextBlock Opacity="0.5" Text="{x:Bind Path}" />
+                        <TextBlock
+                            Style="{ThemeResource BodyStrongTextBlockStyle}"
+                            Text="{x:Bind Name}"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            Opacity="0.5"
+                            Text="{x:Bind Path}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
                     </StackPanel>
 
                     <ToggleSwitch
@@ -154,7 +163,7 @@
 
             <Border Width="8" />
 
-            <Image Source="/Assets/exe-arg.ico" Height="20" />
+            <Image Height="20" Source="/Assets/exe-arg.ico" />
 
             <TextBlock
                 Margin="16,0"
@@ -180,7 +189,7 @@
             <NavigationView.PaneHeader>
                 <TextBlock
                     Margin="{ThemeResource NavigationViewAutoSuggestBoxMargin}"
-                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
                     Text="已配置的程序" />
             </NavigationView.PaneHeader>
 
@@ -275,6 +284,9 @@
                     Grid.Row="1"
                     VerticalAlignment="Stretch"
                     Background="{ThemeResource LayerOnMicaBaseAltFillColorDefault}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1,0"
+                    CornerRadius="4"
                     IsNavigationStackEnabled="False" />
             </Grid>
 

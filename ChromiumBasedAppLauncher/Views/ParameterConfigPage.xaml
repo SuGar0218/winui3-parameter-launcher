@@ -12,26 +12,29 @@
 
     <Page.Resources>
         <DataTemplate x:Key="ParameterListItemDataTemplate" x:DataType="vm:ParameterListItem">
-            <Grid>
+            <Grid ColumnSpacing="4">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
                 <CheckBox
                     Grid.Column="0"
-                    HorizontalAlignment="Stretch"
                     Checked="CheckBox_Parameter_CheckedChanged"
                     IsChecked="{x:Bind Enabled, Mode=TwoWay}"
-                    Unchecked="CheckBox_Parameter_CheckedChanged">
-                    <TextBox
-                        HorizontalAlignment="Stretch"
-                        DataContext="{x:Bind}"
-                        Text="{x:Bind Parameter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        TextChanged="ParameterListItemChanged" />
-                </CheckBox>
+                    Unchecked="CheckBox_Parameter_CheckedChanged" />
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBox
+                    PlaceholderText="启动参数"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    DataContext="{x:Bind}"
+                    Text="{x:Bind Parameter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TextChanged="ParameterListItemChanged" />
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <HyperlinkButton
                         Click="HyperlinkButton_Copy_Click"
                         Content="复制"
@@ -50,40 +53,56 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0">
+        <CommandBar Grid.Row="0">
+            <AppBarButton
+                Click="AppBarButton_Add_Click"
+                Icon="Add"
+                Label="添加启动参数" />
+
+            <AppBarButton
+                Click="AppBarButton_Save_Click"
+                Icon="Accept"
+                Label="保存" />
+
+            <AppBarSeparator />
+
+            <AppBarButton
+                Click="AppBarButton_Launch_Click"
+                Icon="Go"
+                Label="启动" />
+
+            <AppBarButton
+                Click="AppBarButton_LaunchAsAdmin_Click"
+                Icon="Admin"
+                Label="以管理员身份启动" />
+        </CommandBar>
+
+        <StackPanel Grid.Row="1" Margin="36,0,36,12">
             <StackPanel
-                Margin="16,0"
                 Loaded="{x:Bind helper:LayoutHelper.StackPanelCenterVerticalAlignContentOnLoaded}"
                 Orientation="Horizontal"
                 Spacing="16">
                 <Image Source="{x:Bind viewModel.AppListItem.Icon}" />
                 <StackPanel>
                     <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind viewModel.AppListItem.Name}" />
-                    <TextBlock Text="{x:Bind viewModel.AppListItem.Path}" />
+                    <TextBlock
+                        Opacity="0.5"
+                        Style="{ThemeResource BodyTextBlockStyle}"
+                        Text="{x:Bind viewModel.AppListItem.Path}" />
                 </StackPanel>
             </StackPanel>
-
-            <CommandBar Grid.Row="0">
-                <AppBarButton
-                    Click="AppBarButton_Add_Click"
-                    Icon="Add"
-                    Label="添加启动参数" />
-                <AppBarButton
-                    Click="AppBarButton_Save_Click"
-                    Icon="Accept"
-                    Label="保存" />
-            </CommandBar>
         </StackPanel>
 
-        <StackPanel Grid.Row="1">
-            <ScrollView Padding="16,0">
-                <StackPanel Spacing="4">
-                    <ItemsRepeater ItemTemplate="{StaticResource ParameterListItemDataTemplate}" ItemsSource="{x:Bind viewModel.ParameterConfigs}" />
-                </StackPanel>
-            </ScrollView>
-        </StackPanel>
+        <ScrollViewer Grid.Row="2" Padding="36,0">
+            <ItemsRepeater ItemTemplate="{StaticResource ParameterListItemDataTemplate}" ItemsSource="{x:Bind viewModel.ParameterConfigs}">
+                <ItemsRepeater.Layout>
+                    <StackLayout Spacing="8" />
+                </ItemsRepeater.Layout>
+            </ItemsRepeater>
+        </ScrollViewer>
     </Grid>
 </Page>

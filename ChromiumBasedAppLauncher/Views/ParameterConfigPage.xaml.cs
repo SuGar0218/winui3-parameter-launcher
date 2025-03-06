@@ -1,9 +1,14 @@
+using ChromiumBasedAppLauncherCommon.Helpers;
+
+using ChromiumBasedAppLauncherGUI.Extensions;
 using ChromiumBasedAppLauncherGUI.Helpers;
 using ChromiumBasedAppLauncherGUI.ViewModels;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+
+using System.Threading.Tasks;
 
 namespace ChromiumBasedAppLauncherGUI.Views;
 
@@ -80,5 +85,33 @@ public sealed partial class ParameterConfigPage : Page
     private void HyperlinkButton_Copy_Click(object sender, RoutedEventArgs e)
     {
         ClipboardHelper.Copy(DataContextHelper.GetDataContext<ParameterListItem>(sender).Parameter);
+    }
+
+    private void AppBarButton_Launch_Click(object sender, RoutedEventArgs e)
+    {
+        AppBarButton button = (AppBarButton) sender;
+        button.IsEnabled = false;
+        Task.Run(() =>
+        {
+            if (ProcessHelper.StartSilentAndWait(viewModel.AppListItem.Path) is null)
+            {
+                DispatcherQueue.TryEnqueue(async () => await this.MessageBox("请考虑尝试以管理员身份启动", "启动失败"));
+            }
+        });
+        button.IsEnabled = true;
+    }
+
+    private void AppBarButton_LaunchAsAdmin_Click(object sender, RoutedEventArgs e)
+    {
+        AppBarButton button = (AppBarButton) sender;
+        button.IsEnabled = false;
+        Task.Run(() =>
+        {
+            if (ProcessHelper.StartSilentAsAdminAndWait(viewModel.AppListItem.Path) is null)
+            {
+                DispatcherQueue.TryEnqueue(async () => await this.MessageBox("", "启动失败"));
+            }
+        });
+        button.IsEnabled = true;
     }
 }
