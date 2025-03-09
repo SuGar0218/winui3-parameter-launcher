@@ -19,7 +19,7 @@
         <x:Double x:Key="NavigationViewItemOnLeftIconBoxHeight">48</x:Double>
         <Thickness x:Key="NavigationViewItemOnLeftIconBoxMargin">8,0</Thickness>
         <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
-        <SolidColorBrush x:Key="TabViewBorderBrush" Color="Transparent" />
+        <SolidColorBrush x:Key="TabViewBorderBrush" Color="{ThemeResource LayerFillColorDefaultBrush}" />
 
         <!--  已打开的标签页模板  -->
         <DataTemplate x:Key="AppListTabItemDataTemplate" x:DataType="vm:AppListItem">
@@ -48,7 +48,6 @@
 
                     <StackPanel Grid.Column="0" ToolTipService.ToolTip="{x:Bind Path}">
                         <TextBlock
-                            Style="{ThemeResource BodyStrongTextBlockStyle}"
                             Text="{x:Bind Name}"
                             TextWrapping="NoWrap" />
                         <TextBlock
@@ -283,7 +282,7 @@
                     x:Name="TabViewContentFrame"
                     Grid.Row="1"
                     VerticalAlignment="Stretch"
-                    Background="{ThemeResource LayerOnMicaBaseAltFillColorDefault}"
+                    Background="{ThemeResource LayerFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1,0"
                     CornerRadius="4"

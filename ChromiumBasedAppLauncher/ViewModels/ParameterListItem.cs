@@ -13,11 +13,11 @@ public partial class ParameterListItem// : ObservableObject
     }
 
     /// <summary>
-    /// 此项在列表视图中的编号
+    /// 此项在列表视图中的编号，开始于 1
     /// </summary>
-    public int Num { get; init; }
+    public int Num { get; set; }
 
-    public ParameterConfig Config { get; init; }
+    public ParameterConfig Config { get; set; }
 
     public string Parameter
     {
