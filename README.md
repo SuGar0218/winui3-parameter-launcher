@@ -1,7 +1,15 @@
 # winui3-parameter-launcher
 Launch EXE with preferred parameters anywhere.
 
-带参数启动是如何实现的？
+## 此项目已弃用
+
+取而代之的是，新的项目：https://github.com/SuGar0218/PreLaunchTaskr
+
+新的项目完全包含废弃项目的所有功能。
+
+已有的 Issues 以后会在新项目中尝试解决。
+
+## 带参数启动是如何实现的？
 ![IFEOTip](https://github.com/user-attachments/assets/06223350-1557-4e9d-a702-1207889436e6)
 
 ChromiumBasedAppLauncher: WinUI3 主程序。
